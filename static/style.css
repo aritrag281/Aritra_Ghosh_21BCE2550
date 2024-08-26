@@ -1,8 +1,16 @@
+/* style.css */
+
+#game-container {
+    display: flex;
+    justify-content: space-between;
+}
+
 #game-board {
     display: grid;
     grid-template-columns: repeat(5, 50px);
     grid-template-rows: repeat(5, 50px);
     gap: 5px;
+    width: 60%;
 }
 
 .cell {
@@ -23,7 +31,7 @@
 }
 
 .selected {
-    border: 2px solid red;  /* Highlight selected cell */
+    border: 2px solid red;
 }
 
 #controls {
@@ -31,5 +39,31 @@
 }
 
 #move-history {
+    width: 35%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    height: 400px;
+    overflow-y: auto;
+}
+
+#chat {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-history {
+    height: 200px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+#chat-message {
+    width: 100%;
+    padding: 10px;
+}
+
+button {
+    margin: 5px;
 }

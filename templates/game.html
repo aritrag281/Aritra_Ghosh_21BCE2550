@@ -6,7 +6,9 @@
     <title>Game</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-    <script src="{{ url_for('static', filename='game.js') }}"></script>
+    <script>
+        window.username = "{{ username }}";  // Pass username to JavaScript
+    </script>
     <style>
         body {
             display: flex;
@@ -22,20 +24,32 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        #main-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: space-between;
+        }
         #game-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             border: 2px solid #333;
             padding: 20px;
             border-radius: 10px;
             background-color: #f9f9f9;
+            flex: 2;
+            margin-right: 20px;
+        }
+        #game-board-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 20px; /* Space between game board and move history */
         }
         #game-board {
             width: 300px;
             height: 300px;
             background-color: #eee;
-            margin-right: 20px;
             border: 2px solid #333;
             border-radius: 10px;
         }
@@ -63,7 +77,47 @@
             color: white;
         }
         #controls button:hover {
+            background-color: #0056b3;
+        }
+        #chat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #333;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            flex: 1;
+            margin-left: 20px;
+        }
+        #chat-history {
+            width: 300px;
+            height: 300px;
+            overflow-y: auto;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #chat-message {
+            width: 300px;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #chat button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
             background-color: #007bff;
+            color: white;
+        }
+        #chat button:hover {
+            background-color: #0056b3;
         }
         #logout-button {
             position: absolute;
@@ -84,20 +138,33 @@
 </head>
 <body>
     <button id="logout-button" onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
-    <h1>Chess-like Game</h1>
-    <div id="game-container">
-        <div id="game-board">
-            <!-- Game board will be rendered here -->
+    <h1>Game</h1>
+    <div id="main-container">
+        <div id="game-container">
+            <div id="game-board-wrapper">
+                <div id="game-board">
+                    <!-- Game board will be rendered here -->
+                </div>
+                <div id="move-history">
+                    <!-- Move history will be rendered here -->
+                </div>
+            </div>
+            <div id="controls">
+                <button onclick="makeMove('up')">Up</button>
+                <button onclick="makeMove('down')">Down</button>
+                <button onclick="makeMove('left')">Left</button>
+                <button onclick="makeMove('right')">Right</button>
+            </div>
         </div>
-        <div id="move-history">
-            <!-- Move history will be rendered here -->
+        <div id="chat">
+            <div id="chat-history">
+                <!-- Chat history will be rendered here -->
+            </div>
+            <input type="text" id="chat-message" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
         </div>
     </div>
-    <div id="controls">
-        <button onclick="makeMove('up')">Up</button>
-        <button onclick="makeMove('down')">Down</button>
-        <button onclick="makeMove('left')">Left</button>
-        <button onclick="makeMove('right')">Right</button>
-    </div>
+
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
 </body>
 </html>

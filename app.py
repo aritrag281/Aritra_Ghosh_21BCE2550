@@ -1,3 +1,5 @@
+# app.py
+
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -62,22 +64,25 @@ def logout():
 @app.route('/game')
 @login_required
 def game():
-    return render_template('game.html')
+    return render_template('game.html', username=current_user.username)
 
 @socketio.on('connect')
 def handle_connect():
-    emit('init', {'board': game_state.board, 'history': game_state.history})
+    emit('init', {'board': game_state.board, 'history': game_state.move_history})
 
 @socketio.on('move')
 def handle_move(data):
     character_name = data['character']
     direction = data['direction']
-    print(f"Received move: {character_name}, {direction}")  # Debugging statement
-    winner = game_state.update_state(character_name, direction)
-    if winner:
-        emit('update', {'board': game_state.board, 'history': game_state.history, 'winner': winner}, broadcast=True)
+    if game_state.is_valid_move(character_name, direction):
+        game_state.update_state(character_name, direction)
+        emit('update', {'board': game_state.board, 'history': game_state.move_history}, broadcast=True)
     else:
-        emit('update', {'board': game_state.board, 'history': game_state.history}, broadcast=True)
+        emit('invalid_move', {'error': 'Invalid move'})
+
+@socketio.on('chat_message')
+def handle_chat_message(data):
+    emit('chat_message', {'user': data['user'], 'message': data['message']}, broadcast=True)
 
 if __name__ == '__main__':
     with app.app_context():

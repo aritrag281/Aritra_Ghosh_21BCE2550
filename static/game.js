@@ -1,24 +1,26 @@
+// game.js
+
 const socket = io();
 let selectedCharacter = null;
 
 socket.on('init', (data) => {
     renderBoard(data.board);
     renderMoveHistory(data.history);
-    if (data.winner) {
-        alert(`Player ${data.winner} wins!`);
-    }
 });
 
 socket.on('update', (data) => {
     renderBoard(data.board);
     renderMoveHistory(data.history);
-    if (data.winner) {
-        alert(`Player ${data.winner} wins!`);
-    }
 });
 
 socket.on('invalid_move', (data) => {
     alert(data.error);
+});
+
+socket.on('chat_message', (data) => {
+    const chatHistory = document.getElementById('chat-history');
+    chatHistory.innerHTML += `<p><strong>${data.user}:</strong> ${data.message}</p>`;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
 });
 
 function renderBoard(board) {
@@ -38,17 +40,17 @@ function renderBoard(board) {
             gameBoard.appendChild(div);
         });
     });
-    console.log('Board rendered:', board);
 }
 
 function renderMoveHistory(history) {
-    const historyDiv = document.getElementById('move-history');
-    historyDiv.innerHTML = '';
-    history.forEach((move) => {
+    const moveHistory = document.getElementById('move-history');
+    moveHistory.innerHTML = '';
+    history.forEach((entry) => {
         const p = document.createElement('p');
-        p.textContent = move;
-        historyDiv.appendChild(p);
+        p.textContent = entry;
+        moveHistory.appendChild(p);
     });
+    moveHistory.scrollTop = moveHistory.scrollHeight;
 }
 
 function handleCellClick(cell) {
@@ -66,11 +68,19 @@ function handleCellClick(cell) {
 
 function makeMove(direction) {
     if (selectedCharacter) {
-        console.log(`Sending move: ${selectedCharacter}, ${direction}`);
         socket.emit('move', { character: selectedCharacter, direction });
         selectedCharacter = null;
         document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
     } else {
         alert('No character selected!');
+    }
+}
+
+function sendMessage() {
+    const messageInput = document.getElementById('chat-message');
+    const message = messageInput.value;
+    if (message.trim()) {
+        socket.emit('chat_message', { user: window.username, message });
+        messageInput.value = '';
     }
 }
