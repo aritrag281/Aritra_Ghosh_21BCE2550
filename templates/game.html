@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Chess-like Game</h1>
+    <div id="game-board"></div>
+    <div id="controls">
+        <button onclick="makeMove('up')">Up</button>
+        <button onclick="makeMove('down')">Down</button>
+        <button onclick="makeMove('left')">Left</button>
+        <button onclick="makeMove('right')">Right</button>
+    </div>
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>

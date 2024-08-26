@@ -1,0 +1,32 @@
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-template-rows: repeat(5, 50px);
+    gap: 5px;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+.pawn {
+    background-color: lightblue;
+}
+
+.hero1, .hero2 {
+    background-color: lightgreen;
+}
+
+.selected {
+    border: 2px solid red;  /* Highlight selected cell */
+}
+
+#controls {
+    margin-top: 20px;
+}
+
