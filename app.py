@@ -66,20 +66,18 @@ def game():
 
 @socketio.on('connect')
 def handle_connect():
-    emit('init', {'board': game_state.board, 'history': game_state.move_history, 'winner': game_state.winner})
+    emit('init', {'board': game_state.board, 'history': game_state.history})
 
 @socketio.on('move')
 def handle_move(data):
     character_name = data['character']
     direction = data['direction']
-    if game_state.is_valid_move(character_name, direction):
-        move_result = game_state.update_state(character_name, direction)
-        if move_result:
-            emit('update', {'board': game_state.board, 'history': game_state.move_history, 'winner': game_state.winner}, broadcast=True)
-        else:
-            emit('invalid_move', {'error': 'Invalid move'})
+    print(f"Received move: {character_name}, {direction}")  # Debugging statement
+    winner = game_state.update_state(character_name, direction)
+    if winner:
+        emit('update', {'board': game_state.board, 'history': game_state.history, 'winner': winner}, broadcast=True)
     else:
-        emit('invalid_move', {'error': 'Invalid move'})
+        emit('update', {'board': game_state.board, 'history': game_state.history}, broadcast=True)
 
 if __name__ == '__main__':
     with app.app_context():

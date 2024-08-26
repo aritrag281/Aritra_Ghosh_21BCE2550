@@ -50,8 +50,7 @@ class GameState:
         self.board = [['' for _ in range(5)] for _ in range(5)]
         self.turn = 'A'
         self.players = {'A': [], 'B': []}
-        self.move_history = []
-        self.winner = None
+        self.history = []
         self.initialize_board()
 
     def initialize_board(self):
@@ -72,65 +71,74 @@ class GameState:
         character = self.get_character(character_name)
         if not character:
             return False
-        
+
         new_position = character.move(direction)
         x, y = new_position
 
         if x < 0 or x >= 5 or y < 0 or y >= 5:
             return False  # Out of bounds
-
         if self.board[x][y] != '':
-            if self.board[x][y][0] == character_name[0]:
-                return False  # Target cell occupied by friendly character
-
+            return False  # Cell already occupied
         return True
-
-    def check_combat(self, old_position, new_position):
-        if self.board[new_position[0]][new_position[1]] != '':
-            enemy_name = self.board[new_position[0]][new_position[1]]
-            enemy_player = enemy_name[0]
-            if enemy_player != self.turn:
-                self.board[new_position[0]][new_position[1]] = ''
-                return True
-        return False
-
-    def check_win(self):
-        player_a_alive = any(c.name.startswith('A_') for c in self.players['A'])
-        player_b_alive = any(c.name.startswith('B_') for c in self.players['B'])
-        
-        if not player_a_alive:
-            self.winner = 'B'
-        elif not player_b_alive:
-            self.winner = 'A'
 
     def update_state(self, character_name, direction):
         character = self.get_character(character_name)
         if not character:
-            return False
+            return
 
         old_position = character.position
         new_position = character.move(direction)
 
-        if not self.is_valid_move(character_name, direction):
-            return False
+        if new_position[0] < 0 or new_position[0] >= 5 or new_position[1] < 0 or new_position[1] >= 5:
+            return
 
-        if not (0 <= new_position[0] < 5 and 0 <= new_position[1] < 5):
-            return False
-
-        if self.check_combat(old_position, new_position):
-            self.board[old_position[0]][old_position[1]] = ''
         self.board[old_position[0]][old_position[1]] = ''
-        self.board[new_position[0]][new_position[1]] = character_name
+        self.board[new_position[0]][new_position[1]] = character.name
         character.position = new_position
 
-        self.move_history.append(f'{self.turn} moved {character_name} to {direction}')
-        self.check_win()
+        # Combat check
+        if self.check_combat(new_position):
+            self.remove_character(new_position)
+
+        # Check for win condition
+        winner = self.check_win()
+        if winner:
+            return winner
+
+        # Switch turn
         self.turn = 'B' if self.turn == 'A' else 'A'
-        return True
+        self.history.append(f"{self.turn} moved {character_name} {direction}")
+        print(f"Updated board: {self.board}")  # Debugging statement
 
     def get_character(self, character_name):
         for player in self.players:
             for character in self.players[player]:
                 if character.name == character_name:
                     return character
+        return None
+
+    def check_combat(self, position):
+        x, y = position
+        for player in self.players:
+            for character in self.players[player]:
+                if character.position == (x, y):
+                    # Combat: remove opponent's character
+                    if player != self.turn:
+                        return True
+        return False
+
+    def remove_character(self, position):
+        x, y = position
+        for player in self.players:
+            for character in self.players[player]:
+                if character.position == (x, y):
+                    self.players[player].remove(character)
+                    self.board[x][y] = ''
+                    break
+
+    def check_win(self):
+        if not self.players['A']:
+            return 'B'
+        if not self.players['B']:
+            return 'A'
         return None
