@@ -13,24 +13,36 @@ class Pawn(Character):
             return (x - 1, y)
         elif direction == 'down':
             return (x + 1, y)
+        elif direction == 'left':
+            return (x, y - 1)
+        elif direction == 'right':
+            return (x, y + 1)
         return self.position
 
 class Hero1(Character):
     def move(self, direction):
         x, y = self.position
         if direction == 'left':
-            return (x, y - 1)
+            return (x, y - 2)
         elif direction == 'right':
-            return (x, y + 1)
+            return (x, y + 2)
+        elif direction == 'up':
+            return (x - 2, y)
+        elif direction == 'down':
+            return (x + 2, y)
         return self.position
 
 class Hero2(Character):
     def move(self, direction):
         x, y = self.position
         if direction == 'left':
-            return (x, y - 1)
+            return (x - 1, y - 1)
         elif direction == 'right':
-            return (x, y + 1)
+            return (x - 1, y + 1)
+        elif direction == 'up':
+            return (x - 1, y)
+        elif direction == 'down':
+            return (x + 1, y)
         return self.position
 
 class GameState:
@@ -38,6 +50,8 @@ class GameState:
         self.board = [['' for _ in range(5)] for _ in range(5)]
         self.turn = 'A'
         self.players = {'A': [], 'B': []}
+        self.move_history = []
+        self.winner = None
         self.initialize_board()
 
     def initialize_board(self):
@@ -64,29 +78,55 @@ class GameState:
 
         if x < 0 or x >= 5 or y < 0 or y >= 5:
             return False  # Out of bounds
+
         if self.board[x][y] != '':
-            return False  # Cell already occupied
+            if self.board[x][y][0] == character_name[0]:
+                return False  # Target cell occupied by friendly character
+
         return True
+
+    def check_combat(self, old_position, new_position):
+        if self.board[new_position[0]][new_position[1]] != '':
+            enemy_name = self.board[new_position[0]][new_position[1]]
+            enemy_player = enemy_name[0]
+            if enemy_player != self.turn:
+                self.board[new_position[0]][new_position[1]] = ''
+                return True
+        return False
+
+    def check_win(self):
+        player_a_alive = any(c.name.startswith('A_') for c in self.players['A'])
+        player_b_alive = any(c.name.startswith('B_') for c in self.players['B'])
+        
+        if not player_a_alive:
+            self.winner = 'B'
+        elif not player_b_alive:
+            self.winner = 'A'
 
     def update_state(self, character_name, direction):
         character = self.get_character(character_name)
         if not character:
-            return
+            return False
 
         old_position = character.position
         new_position = character.move(direction)
 
-        # Ensure new position is valid
-        if new_position[0] < 0 or new_position[0] >= 5 or new_position[1] < 0 or new_position[1] >= 5:
-            return
+        if not self.is_valid_move(character_name, direction):
+            return False
 
+        if not (0 <= new_position[0] < 5 and 0 <= new_position[1] < 5):
+            return False
+
+        if self.check_combat(old_position, new_position):
+            self.board[old_position[0]][old_position[1]] = ''
         self.board[old_position[0]][old_position[1]] = ''
-        self.board[new_position[0]][new_position[1]] = character.name
+        self.board[new_position[0]][new_position[1]] = character_name
         character.position = new_position
 
-        # Switch turn
+        self.move_history.append(f'{self.turn} moved {character_name} to {direction}')
+        self.check_win()
         self.turn = 'B' if self.turn == 'A' else 'A'
-        print(f"Updated board: {self.board}")  # Debugging statement
+        return True
 
     def get_character(self, character_name):
         for player in self.players:

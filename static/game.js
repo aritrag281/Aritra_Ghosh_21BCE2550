@@ -3,10 +3,18 @@ let selectedCharacter = null;
 
 socket.on('init', (data) => {
     renderBoard(data.board);
+    renderMoveHistory(data.history);
+    if (data.winner) {
+        alert(`Player ${data.winner} wins!`);
+    }
 });
 
 socket.on('update', (data) => {
     renderBoard(data.board);
+    renderMoveHistory(data.history);
+    if (data.winner) {
+        alert(`Player ${data.winner} wins!`);
+    }
 });
 
 socket.on('invalid_move', (data) => {
@@ -31,6 +39,16 @@ function renderBoard(board) {
         });
     });
     console.log('Board rendered:', board);
+}
+
+function renderMoveHistory(history) {
+    const historyDiv = document.getElementById('move-history');
+    historyDiv.innerHTML = '';
+    history.forEach((move) => {
+        const p = document.createElement('p');
+        p.textContent = move;
+        historyDiv.appendChild(p);
+    });
 }
 
 function handleCellClick(cell) {
