@@ -1,11 +1,11 @@
 # app.py
 
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, emit
 from models import db, User
-from game_logic import GameState
+from game_logic import GameState, AIGameState
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -19,6 +19,7 @@ login_manager.login_view = 'login'
 
 socketio = SocketIO(app)
 
+# Global game state (human vs human)
 game_state = GameState()
 
 @login_manager.user_loader
@@ -37,7 +38,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for('game'))
+            return redirect(url_for('select_opponent'))
         else:
             flash('Login Unsuccessful. Please check username and password.', 'danger')
     return render_template('login.html')
@@ -61,6 +62,21 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route('/select_opponent', methods=['GET', 'POST'])
+@login_required
+def select_opponent():
+    if request.method == 'POST':
+        opponent_type = request.form['opponent']
+        global game_state
+        if opponent_type == 'human':
+            game_state = GameState()
+            session['opponent'] = 'human'
+        elif opponent_type == 'ai':
+            game_state = AIGameState()
+            session['opponent'] = 'ai'
+        return redirect(url_for('game'))
+    return render_template('select_opponent.html')
+
 @app.route('/game')
 @login_required
 def game():
@@ -72,11 +88,18 @@ def handle_connect():
 
 @socketio.on('move')
 def handle_move(data):
+    global game_state
     character_name = data['character']
     direction = data['direction']
+
     if game_state.is_valid_move(character_name, direction):
         game_state.update_state(character_name, direction)
         emit('update', {'board': game_state.board, 'history': game_state.move_history}, broadcast=True)
+        
+        # Check if it's AI's turn and call ai_move
+        if session.get('opponent') == 'ai' and game_state.turn == 'B':
+            game_state.ai_move()
+            emit('update', {'board': game_state.board, 'history': game_state.move_history}, broadcast=True)
     else:
         emit('invalid_move', {'error': 'Invalid move'})
 

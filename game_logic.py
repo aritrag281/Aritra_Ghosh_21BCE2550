@@ -1,3 +1,5 @@
+import random
+
 class Character:
     def __init__(self, name, position):
         self.name = name
@@ -107,3 +109,25 @@ class GameState:
             if not any(p.name.startswith(player) for p in all_pieces):
                 return True
         return False
+
+class AIGameState(GameState):
+    def ai_move(self):
+        # Example: Move a random AI character
+        ai_characters = self.players['B']
+        if not ai_characters:
+            return
+        
+        # Select a random character and direction for the move
+        character = random.choice(ai_characters)
+        directions = ['up', 'down', 'left', 'right']
+        direction = random.choice(directions)
+
+        # Make the move if valid
+        if self.is_valid_move(character.name, direction):
+            self.update_state(character.name, direction)
+        else:
+            # Retry or choose another character if the move is invalid
+            self.ai_move()
+
+        # Switch turn after AI move
+        self.turn = 'A'
