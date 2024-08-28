@@ -1,6 +1,5 @@
 
-
-****#Pawns & Heroes - Chess-like Game - Hitwicket Software Development Task
+#Pawns & Heroes - Chess-like Game - Hitwicket Software Development Task
 ****
 
 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
