@@ -1,11 +1,19 @@
 
 
-# Chess-like Game
+#Pawns & Heroes - Chess-like Game - Hitwicket Software Development Task
 
+🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 Working Video of the Hitwicket Software Enngineering Task - https://drive.google.com/file/d/1r77Uk91sRDrZqnS3fNnO7zi_3-2sYKKX/view?usp=sharing
 
 ## Description
 This project is a web-based chess-like game using Flask, Flask-SocketIO, and SQLAlchemy. It allows users to log in, play a game, and track moves with real-time updates.
+
+• Designed a web-based real-time strategy game using Flask, Flask-SocketIO, and SQLAlchemy, enabling users to log in, play, and
+track moves with real-time updates through a server-client architecture.
+• Developed a web client with interactive features, including clickable character pieces, valid move indicators, and move history
+logging, utilizing websockets for seamless communication with the server.
+• Implemented an AI opponent capable of playing the game using basic strategy, integrating machine learning algorithms to enhance
+gameplay and provide a challenging experience for users
 
 ## Setup
 
