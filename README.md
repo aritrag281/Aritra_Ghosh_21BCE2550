@@ -12,6 +12,7 @@ Designed a web-based real-time strategy game using Flask, Flask-SocketIO, and SQ
 track moves with real-time updates through a server-client architecture.Developed a web client with interactive features, including clickable character pieces, valid move indicators, and move history logging, utilizing websockets for seamless communication with the server. **Implemented an AI opponent capable of playing the game using basic strategy, integrating machine learning algorithms to enhance gameplay and provide a challenging experience for users**
 
 Bonus Features Implemented
+
 2. Implement a dynamic team composition feature:
 ○ Allow players to choose their team composition at the start of each game.
 ○ Ensure the game logic can handle any combination of character types.
