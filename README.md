@@ -11,6 +11,14 @@ This project is a web-based chess-like game using Flask, Flask-SocketIO, and SQL
 Designed a web-based real-time strategy game using Flask, Flask-SocketIO, and SQLAlchemy, enabling users to log in, play, and
 track moves with real-time updates through a server-client architecture.Developed a web client with interactive features, including clickable character pieces, valid move indicators, and move history logging, utilizing websockets for seamless communication with the server. **Implemented an AI opponent capable of playing the game using basic strategy, integrating machine learning algorithms to enhance gameplay and provide a challenging experience for users**
 
+Bonus Features Implemented
+2. Implement a dynamic team composition feature:
+○ Allow players to choose their team composition at the start of each game.
+○ Ensure the game logic can handle any combination of character types.
+3. Add a spectator mode for other clients to watch ongoing games.
+4. Implement a chat feature for players to communicate during the game.
+5. Create an AI opponent that can play the game using basic strategy
+
 ## Setup
 
 1. **Clone the repository:**
