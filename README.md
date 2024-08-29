@@ -3,7 +3,7 @@
 ****
 
 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-Working Video of the Hitwicket Software Enngineering Task - [https://drive.google.com/file/d/1r77Uk91sRDrZqnS3fNnO7zi_3-2sYKKX/view?usp=sharing
+Working Video of the Hitwicket Software Engineering Task - [https://drive.google.com/file/d/1r77Uk91sRDrZqnS3fNnO7zi_3-2sYKKX/view?usp=sharing
 ](https://drive.google.com/file/d/1Kk3dgh8Jc5pXeVxH86sJVEhiCyXZl6Rn/view?usp=sharing)
 ## Description
 This project is a web-based chess-like game using Flask, Flask-SocketIO, and SQLAlchemy. It allows users to log in, play a game, and track moves with real-time updates.
