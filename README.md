@@ -2,6 +2,8 @@
 **Pawns & Heroes - Chess-like Game - Hitwicket Software Development Task**
 ****
 
+**IMPLEMENTED ALL THE BONUS CHALLENGES**
+
 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 Working Video of the Hitwicket Software Engineering Task - [https://drive.google.com/file/d/1r77Uk91sRDrZqnS3fNnO7zi_3-2sYKKX/view?usp=sharing
 ](https://drive.google.com/file/d/1Kk3dgh8Jc5pXeVxH86sJVEhiCyXZl6Rn/view?usp=sharing)
