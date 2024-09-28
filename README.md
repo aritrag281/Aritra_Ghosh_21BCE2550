@@ -11,14 +11,37 @@ This project is a web-based chess-like game using Flask, Flask-SocketIO, and SQL
 Designed a web-based real-time strategy game using Flask, Flask-SocketIO, and SQLAlchemy, enabling users to log in, play, and
 track moves with real-time updates through a server-client architecture.Developed a web client with interactive features, including clickable character pieces, valid move indicators, and move history logging, utilizing websockets for seamless communication with the server. **Implemented an AI opponent capable of playing the game using basic strategy, integrating machine learning algorithms to enhance gameplay and provide a challenging experience for users**
 
-Bonus Features Implemented
+**IMPLEMENTED ALL THE Bonus Challenges**
 
-2. Implement a dynamic team composition feature:
-○ Allow players to choose their team composition at the start of each game.
-○ Ensure the game logic can handle any combination of character types.
-3. Add a spectator mode for other clients to watch ongoing games.
-4. Implement a chat feature for players to communicate during the game.
-5. Create an AI opponent that can play the game using basic strategy
+1 Implement additional character types with unique move patterns.
+Add Hero3:
+Movement: Moves 2 steps straight and one to the side in a single turn.
+Attack: Kills only the character at its final landing position (if occupied by an opponent).
+Move commands:
+FL: 2 steps Forward, 1 step Left
+FR: 2 steps Forward, 1 step Right
+BL: 2 steps Backward, 1 step Left
+BR: 2 steps Backward, 1 step Right
+RF: 2 steps Right, 1 step Forward
+RB: 2 steps Right, 1 step Backward
+LF: 2 steps Left, 1 step Forward
+LB: 2 steps Left, 1 step Backward
+Example moves: H3:FR (2 front, 1 right), H3:RF (2 right, 1 front)
+
+2 Implement a dynamic team composition feature:
+Allow players to choose their team composition at the start of each game.
+Ensure the game logic can handle any combination of character types.
+
+3 Add a spectator mode for other clients to watch ongoing games.
+
+4 Implement a chat feature for players to communicate during the game.
+
+5 Create an AI opponent that can play the game using basic strategy.
+
+6 Implement a replay system that allows players to review past games move by move.
+
+7 Add a ranking system that tracks player performance across multiple games.
+
 
 ## Setup
 
